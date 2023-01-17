@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  </head>
+  <body>
+    <script> 
+window.WindowWorkerEvents=new Map();
+window.addEventListener("message",function(e){
+     if(e.data.rid){
+      e.data=e.data.msg;
+       let funs = WindowWorkerEvents.get(e.data.rid);
+           const funs_length=funs.length;
+           for(let i=0;i<funs_length;i++){try{
+                  funs[i](e);
+           }catch(e){continue;}}
+       return;
+       
+     }
+    
+    
+});
+class WindowWorker {
+  constructor(workerURL) {
+      
+     
+    this.readyId=performance.now()+""+Math.random();
+        this.windowWorkerEvents=[];
+        WindowWorkerEvents.set(this.readyId,this.windowWorkerEvents);
+    this.iframe = this.buildWorker(workerURL,this.readyId);
+
+  }
+  
+   terminate(){
+      WindowWorkerEvents.delete(this.readyId);
+     return document.body.removeChild(this.iframe);
+
+   }
+  
+   set onmessage(msg) {
+      let wwe = WindowWorkerEvents.get(this.readyId);
+         wwe[wwe.length]=msg;
+    return wwe;
+
+  }
+
+   addEventListener(msgevent,msg){
+
+   if(msgevent=="message"){
+      let wwe = WindowWorkerEvents.get(this.readyId);
+         wwe[wwe.length]=msg;
+      return wwe;
+
+   }else{
+
+   return super.addEventListener(msgevent,msg);
+
+   }
+
+
+    }
+
+  
+   postMessage(message,transfer){
+   
+     return this.iframe.contentWindow.postMessage(message, 'https://window-worker.vercel.app', transfer);
+     
+   }
+  
+  
+  async  buildWorker (wURL,trid){
+      let wj = await fetch(wURL);
+      let wjs=await wj.text();
+      let crf = document.createElement('iframe');
+      crf.setAttribute('readyId',trid); 
+      crf.style='visibility:hidden;height:0px;width:0px;';
+      crf.setAttribute('frameborder','0');
+      crf.referrerpolicy='no-referrer';
+      //crf.sandbox="allow-scripts allow-top-navigation";
+      crf.src = 'https://window-worker.vercel.app/worker.html?'+encodeURIComponent(JSON.stringify(window.location))+'?'+encodeURIComponent(crf.getAttribute('readyId'))+'?'+encodeURIComponent(JSON.stringify(window.navigator));
+      document.body.appendChild(crf); 
+      window.addEventListener("message", (event) => {
+    
+        let rid = 'ready' + crf.getAttribute('readyId');
+      if(event.data===rid){
+      //console.log(event);
+      let data={};
+        data.script=encodeURIComponent(wjs);
+        crf.contentWindow.postMessage(data,'https://window-worker.vercel.app');
+        crf.setAttribute('active','active');
+      }
+      });
+        this.iframe = crf;
+    return crf;
+   }
+
+};
+
+
+ 
+
+    
+    </script>
+    
+    <script>
+      window.importScripts = function (){
+        const arguments_length=arguments.length;
+        for (let i = 0; i < arguments_length; i++) {
+            const request = new XMLHttpRequest();
+            request.open('GET', arguments[i], false); 
+            request.send(null);
+            if (request.status === 200) {
+              try{
+                eval?.('void async function winworker(){'+request.responseText+'}();');
+              }catch(e){
+                  try{
+                    eval('void async function winworker(){'+request.responseText+'}();');
+                  }catch(e){
+                      const script = document.createElement('script');
+                      script.type = 'text/javascript';
+                      script.innerHTML = 'void async function winworker(){'+request.responseText+'}();';
+                      document.head.appendChild(script);        
+                   }
+              
+              }
+            }
+        }   
+      
+      }
+  </script>     
+    <script>
+    window.fonts=document.fonts;
+    try{
+    window.𝚕𝚘𝚌𝚊𝚝𝚒𝚘𝚗 = JSON.parse(decodeURIComponent(window.location.href.split('?')[1]));
+    }catch(e){return;}
+     window.𝚗𝚊𝚟𝚒𝚐𝚊𝚝𝚘𝚛 = JSON.parse(decodeURIComponent(window.location.href.split('?')[3]));
+    }catch(e){return;}
+    </script>
+     <script> 
+      window.WindowWorkerLocation = JSON.parse(decodeURIComponent(window.location.href.split('?')[1]));
+      window.WindowWorkerNavigator = decodeURIComponent(window.location.href.split('?')[3]);
+  
+try{
+
+window.WindowWorkerNavigator = JSON.parse(window.WindowWorkerNavigator);
+
+}catch(e){console.log("navigator too long");window.WindowWorkerNavigator =JSON.parse(JSON.stringify(window.navigator)); }
+
+      var ParentOrigin = window.WindowWorkerLocation.origin;
+      var readyId = decodeURIComponent(window.location.href.split('?')[2]);  
+      
+      
+     window.postMessage = function(message, transfer){
+      let data={};
+       data.msg=message;
+       data.rid=readyId;
+     return window.parent.postMessage(data, ParentOrigin, transfer);
+        
+     }
+      const loc = {
+         get(window, prop, receiver) {
+            if (prop === "location") {
+              return window.WindowWorkerLocation;
+            }
+
+            if (prop === "origin") {
+              return window.WindowWorkerLocation.origin;
+            }
+
+            if (prop === "fonts") {
+              return document.fonts;
+            }
+
+
+            if (prop === "navigator") {
+              return window.WindowWorkerNavigator;
+            }
+           return Reflect.get(...arguments);
+         },
+        };
+
+      var self = new Proxy(window, loc);
+      
+      
+      
+      window.addEventListener("message", (event) => {
+        //console.log(event);
+          if (event.origin !== ParentOrigin){return;}
+        if(document.getElementById('main-script')){return;}
+      var WindowWorkerScript = document.createElement('script');
+        WindowWorkerScript.id='main-script');
+      WindowWorkerScript.innerHTML = 'void async function winworker(){'+decodeURIComponent(event.data.script)+'}();';
+      document.body.appendChild(WindowWorkerScript); 
+      });
+      
+      window.parent.postMessage('ready'+readyId,ParentOrigin);
+
+    </script>
+  </body>
+</html>
