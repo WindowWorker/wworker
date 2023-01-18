@@ -110,14 +110,14 @@ class WindowWorker {
             request.send(null);
             if (request.status === 200) {
               try{
-                eval?.('void async function winworker(){'+request.responseText+'}();');
+                eval?.(request.responseText);
               }catch(e){
                   try{
-                    eval('void async function winworker(){'+request.responseText+'}();');
+                    eval(request.responseText);
                   }catch(e){
                       const script = document.createElement('script');
                       script.type = 'text/javascript';
-                      script.innerHTML = 'void async function winworker(){'+request.responseText+'}();';
+                      script.innerHTML = request.responseText;
                       document.head.appendChild(script);        
                    }
               
