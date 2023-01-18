@@ -21,19 +21,9 @@
         },
         {
           "key" : "Permission-Policy",
-          "value" : null
+          "value" : "null"
         }
-      ]
-      
-          
-    },{
-      "source": "/(.*).pdfm",
-      "headers" : [
-        {
-          "key" : "Content-Type",
-          "value" : "text/html"
-        }
-      ]
+      ]         
     }
   ]
 }
