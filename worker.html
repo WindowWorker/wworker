@@ -150,7 +150,7 @@ window.WindowWorkerNavigator = JSON.parse(window.WindowWorkerNavigator);
       var readyId = decodeURIComponent(window.location.href.split('?')[2]);  
       
       
-     window..WindowWorkerPostMessage = function(message, transfer){
+     window.WindowWorkerPostMessage = function(message, transfer){
       let data={};
        data.msg=message;
        data.rid=readyId;
@@ -175,7 +175,7 @@ window.WindowWorkerNavigator = JSON.parse(window.WindowWorkerNavigator);
             if (prop === "navigator") {
               return window.WindowWorkerNavigator;
             }
-           if (prop === "postMessagr") {
+           if (prop === "postMessage") {
               return window.WindowWorkerPostMessage;
             }
            
