@@ -131,9 +131,10 @@ class WindowWorker {
     window.fonts=document.fonts;
     try{
     window.𝚕𝚘𝚌𝚊𝚝𝚒𝚘𝚗 = JSON.parse(decodeURIComponent(window.location.href.split('?')[1]));
-    }catch(e){return;}
+    }catch(e){}
+      try{
      window.𝚗𝚊𝚟𝚒𝚐𝚊𝚝𝚘𝚛 = JSON.parse(decodeURIComponent(window.location.href.split('?')[3]));
-    }catch(e){return;}
+    }catch(e){}
     </script>
      <script> 
       window.WindowWorkerLocation = JSON.parse(decodeURIComponent(window.location.href.split('?')[1]));
@@ -187,7 +188,7 @@ window.WindowWorkerNavigator = JSON.parse(window.WindowWorkerNavigator);
           if (event.origin !== ParentOrigin){return;}
         if(document.getElementById('main-script')){return;}
       var WindowWorkerScript = document.createElement('script');
-        WindowWorkerScript.id='main-script');
+        WindowWorkerScript.id='main-script';
       WindowWorkerScript.innerHTML = 'void async function winworker(){'+decodeURIComponent(event.data.script)+'}();';
       document.body.appendChild(WindowWorkerScript); 
       });
