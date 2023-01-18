@@ -175,9 +175,7 @@ window.WindowWorkerNavigator = JSON.parse(window.WindowWorkerNavigator);
             if (prop === "navigator") {
               return window.WindowWorkerNavigator;
             }
-           if (prop === "postMessage") {
-              return window.WindowWorkerPostMessage;
-            }
+
            
            return Reflect.get(...arguments);
          },
@@ -185,7 +183,9 @@ window.WindowWorkerNavigator = JSON.parse(window.WindowWorkerNavigator);
 
       var self = new Proxy(window, loc);
       
-      
+          
+        self.postMessage = window.WindowWorkerPostMessage;
+    
       
       window.addEventListener("message", (event) => {
         //console.log(event);
